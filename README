@@ -1,0 +1,47 @@
+=django-emailtemplates=
+
+==What is it?==
+
+django-emailtemplates allows you to create and store a few e-mail templates in the database. 
+
+Admins can edit them using django's admin (some support for the admin is included). 
+
+If you want to send such e-mail, just fetch it from database and pass some parameters, like usernames or so. 
+
+django-emailtemplates uses django templating system to render the e-mails; every e-mail is sent in both text and HTML.
+
+django-emailtemplates includes some code that checks if the mail server is available - for tasks
+where you *absolutley* need a working mailserver.
+
+==Installation==
+
+{{{
+$ pip install svn+http://django-emailtemplates.googlecode.com/svn/trunk/
+}}}
+
+==Small example==
+
+===settings.py===
+Add 'emailtemplates' to `INSTALLED_APPS`!
+
+===view.py===
+
+{{{
+
+from emailtemplates.models import EmailTemplate
+from emailtemplates.util import check_mail_server
+
+...
+
+def register_me(request):
+
+    if check_mail_server(request):
+    	EmailTemplate.get(uid = 'REGISTER_ME').send('foo@bar.pl', 'Foo Bar', message = 'Hey!')
+	return "Message sent!"
+
+    return "Message not sent, our mail server is not working :-("    	
+}}}
+
+==... but the code doesn't have this and that!===
+
+I *really* want your feedback and patches. Help me with this project, please! :^)
